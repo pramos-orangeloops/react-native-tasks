@@ -1,11 +1,20 @@
+import * as React from 'react';
+import TasksLanding from './TasksLanding';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-// import App from "./App";
-// import { NavigationContainer } from '@react-navigation/native';
-
-// export default function Index() {
-//   return (
-//     <NavigationContainer independent={true}>
-//       <App />
-//     </NavigationContainer>
-//   )
-// }
+export default function App() {
+    return (    
+        <SafeAreaView
+            style={{
+                flex:1,
+                alignItems:'flex-start',
+                justifyContent:'center',
+                width: "100%",
+                height: "100%",
+                backgroundColor: "white"
+            }}
+        >
+            <TasksLanding/>
+        </SafeAreaView>
+    )
+}

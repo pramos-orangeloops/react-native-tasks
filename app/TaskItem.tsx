@@ -1,13 +1,15 @@
-import { View, Text, Image, TouchableOpacity } from "react-native"
+import { Link } from "expo-router";
+import { View, Image, TouchableOpacity } from "react-native"
 
 export interface TaskProps {
-    description: string;
+    taskId: string,
+    description: string,
     isDone: Boolean,
     onClick: () => void
 }
 
-const Task = (props: TaskProps) => {
-    const { description, isDone, onClick } = props
+const TaskItem = (props: TaskProps) => {
+    const { taskId, description, isDone, onClick } = props
 
     return(
         <View style={{
@@ -18,7 +20,7 @@ const Task = (props: TaskProps) => {
             {/* Call or send the prop? */}
             <TouchableOpacity onPress={ () => onClick() }>  
                 <Image
-                    source={isDone ? require('@/assets/images/task-checked.png') : require('@/assets/images/task-unchecked.png') } 
+                    source={isDone ? require('@/assets/images/task-checked.png') : require('@/assets/images/task-unchecked.png')} 
                     style={{
                         width: 40,
                         height: 40,
@@ -27,16 +29,20 @@ const Task = (props: TaskProps) => {
                     }}
                 />
             </TouchableOpacity>
-            <Text
+            <Link
+                href={{
+                    pathname: "/details",
+                    params: { taskId }
+                }}
                 style={{ 
                     width: "90%"
                 }} 
             >
                 {description}
-            </Text>
+            </Link>
 
         </View>
     )
 }
 
-export default Task
+export default TaskItem

@@ -1,36 +1,18 @@
-import { View, Text, FlatList } from "react-native"
-import Task from "./Task"
+import { View, FlatList } from "react-native"
+import TaskItem from "./TaskItem"
 import TasksHeader from "./TasksHeader"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import TasksFooter, { TaskFilters } from "./TasksFooter"
-
-const initialTasks = [
-    {
-        id: 1,
-        description: "Study Typescript",
-        isDone: true
-    },
-    {
-        id: 2,
-        description: "Study React",
-        isDone: false
-    },
-    {
-        id: 3,
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
-        isDone: false
-    },
-    {
-        id: 4,
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-        isDone: false
-    }
-]
+import { Task } from "./Task"
+import { TasksContext, TasksDispatchContext } from "./TasksContext"
+import { TasksActionType } from "./tasksReducer"
+import * as Crypto from 'expo-crypto';
 
 const TasksLanding = () => {
 
-    const [tasks, setTasks] = useState(initialTasks)
-    const [nextId, setNextId] = useState(5)
+    const tasks = useContext(TasksContext)
+    const dispatch = useContext(TasksDispatchContext)
+
     const [currentFilter, setCurrentFilter] = useState(TaskFilters.ALL)
 
     const tasksLeft = tasks.reduce((acc, elem) => {
@@ -50,38 +32,6 @@ const TasksLanding = () => {
         }
     }
 
-    const handleTaskClik = (elemId: number) => {
-        setTasks((state) => {
-            const elem = tasks.find((it) => it.id === elemId)
-            if (!elem) return state
-
-            const newElem = { ...elem, isDone: !elem?.isDone }
-
-            return state.map(it => {
-                if (it.id === elemId) {
-                    return newElem ?? elem
-                }
-                return it
-            })
-        })
-    }
-
-    const handleAddTask = (newTaskDescription: string) => {
-        setTasks([
-            {
-                id: nextId,
-                description: newTaskDescription,
-                isDone: false
-            },
-            ...tasks
-        ])
-        setNextId(nextId + 1)
-    }
-
-    const handleCleanTasks = () => {
-        setTasks(tasks.filter((task) => !task.isDone))
-    }
-
     return (
         <View style={{
             flex: 1,
@@ -96,7 +46,10 @@ const TasksLanding = () => {
             >
                 <TasksHeader 
                     tasksLeft={tasksLeft}
-                    onCleanTasks={handleCleanTasks}
+                    onCleanTasks={() => dispatch({
+                        type: TasksActionType.CLEAN,
+                        task: new Task("" ,"" , false, new Date(), null)
+                    })}
                 />
             </View>
 
@@ -109,10 +62,16 @@ const TasksLanding = () => {
                     data={filteredTasks()}
                     renderItem={({ item }) => {
                         return(
-                            <Task
+                            <TaskItem
+                                taskId={item.id}
                                 description={item.description}
                                 isDone={item.isDone}
-                                onClick={() => { handleTaskClik(item.id) }}
+                                onClick={() => {
+                                    dispatch({
+                                        type: TasksActionType.UPDATE_STATE,
+                                        task: item
+                                    })
+                                }}
                             />
                         )
                     }}
@@ -129,7 +88,10 @@ const TasksLanding = () => {
                 <TasksFooter
                     currentFilter={currentFilter}
                     onFilterChange={(newFilter) => setCurrentFilter(newFilter)}
-                    onAddTask={(description) => handleAddTask(description)}
+                    onAddTask={(description) =>dispatch({
+                        type: TasksActionType.ADD,
+                        task: new Task(Crypto.randomUUID(), description, false, new Date(), null)
+                    })}
                 />
             </View>
         </View>
