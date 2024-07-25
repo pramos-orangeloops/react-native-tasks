@@ -78,6 +78,8 @@ const TasksFooter = (props: TasksFooterProps) => {
                         <TextInput
                             value={taskDescription}
                             onChangeText={setTaskDescription}
+                            returnKeyType="done"
+                            onSubmitEditing={handleAddTaskClick}
                             style={{
                                 marginEnd: 10,
                                 minHeight: 40,

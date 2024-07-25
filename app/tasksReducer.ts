@@ -1,5 +1,6 @@
 import { Reducer } from "react";
 import { Task } from "./Task";
+import { randomUUID } from "expo-crypto"
 
 export const enum TasksActionType {
     UPDATE_STATE,
@@ -8,16 +9,28 @@ export const enum TasksActionType {
     CLEAN
 }
 
-export type TasksAction = {
-    type: TasksActionType,
-    task: Task
-}
+export type TasksAction = 
+    {
+        type: TasksActionType.UPDATE_STATE,
+        taskId: string
+    }
+    | {
+        type: TasksActionType.ADD,
+        taskDescription: string
+    }
+    | {
+        type: TasksActionType.DELETE,
+        taskId: string
+    }
+    | {
+        type: TasksActionType.CLEAN
+    }
 
 export const tasksReducer: Reducer<Task[], TasksAction> = (tasks, action) => {
     switch (action.type) {
         case TasksActionType.UPDATE_STATE: {
 
-            const elem = tasks.find((it) => it.id === action.task.id)
+            const elem = tasks.find((it) => it.id === action.taskId)
             if (!elem) return tasks
 
             const newElem = { 
@@ -27,7 +40,7 @@ export const tasksReducer: Reducer<Task[], TasksAction> = (tasks, action) => {
             }
 
             return tasks.map(it => {
-                if (it.id === action.task.id) {
+                if (it.id === action.taskId) {
                     return newElem
                 }
                 return it
@@ -36,7 +49,7 @@ export const tasksReducer: Reducer<Task[], TasksAction> = (tasks, action) => {
     
         case TasksActionType.ADD: {
             return [
-                action.task,
+                new Task(randomUUID(), action.taskDescription, false, new Date(), null),
                 ...tasks
             ]
         }
@@ -45,8 +58,8 @@ export const tasksReducer: Reducer<Task[], TasksAction> = (tasks, action) => {
             return tasks.filter((task) => !task.isDone)
         }
 
-        default: {
-            return tasks
+        case TasksActionType.DELETE: {
+            return tasks.filter((task) => task.id !== action.taskId)
         }
     }
 }

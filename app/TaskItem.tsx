@@ -15,7 +15,8 @@ const TaskItem = (props: TaskProps) => {
         <View style={{
             flex:1,
             flexDirection: "row",
-            alignItems: "center"
+            alignItems: "center",
+            backgroundColor: "white"
         }}>
             {/* Call or send the prop? */}
             <TouchableOpacity onPress={ () => onClick() }>  
