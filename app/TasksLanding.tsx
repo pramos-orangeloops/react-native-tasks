@@ -1,9 +1,8 @@
-import { View, Text, FlatList, KeyboardAvoidingView, Platform, Keyboard } from "react-native"
+import { View, Text, KeyboardAvoidingView, Platform, Keyboard } from "react-native"
 import TaskItem from "./TaskItem"
 import TasksHeader from "./TasksHeader"
 import { useContext, useEffect, useState } from "react"
 import TasksFooter, { TaskFilters } from "./TasksFooter"
-import { Task } from "./Task"
 import { TasksContext, TasksDispatchContext } from "./TasksContext"
 import { TasksActionType } from "./tasksReducer"
 import { SwipeListView } from 'react-native-swipe-list-view';
