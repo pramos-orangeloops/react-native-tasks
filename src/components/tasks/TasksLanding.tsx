@@ -3,8 +3,8 @@ import TaskItem from "./TaskItem"
 import TasksHeader from "./TasksHeader"
 import { useContext, useEffect, useState } from "react"
 import TasksFooter, { TaskFilters } from "./TasksFooter"
-import { TasksContext, TasksDispatchContext } from "./TasksContext"
-import { TasksActionType } from "./tasksReducer"
+import { TasksContext, TasksDispatchContext } from "../../context/TasksContext"
+import { TasksActionType } from "../../reducer/tasksReducer"
 import { SwipeListView } from 'react-native-swipe-list-view';
 
 const TasksLanding = () => {

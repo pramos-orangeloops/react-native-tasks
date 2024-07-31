@@ -1,7 +1,7 @@
 import { Link } from "expo-router";
 import { useContext } from "react";
 import { View, Image, TouchableOpacity } from "react-native"
-import { ThemeContext } from "./ThemeContextProvider";
+import { ThemeContext } from "../../context/ThemeContextProvider";
 
 export interface TaskProps {
     taskId: string,

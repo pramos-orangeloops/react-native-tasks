@@ -1,6 +1,6 @@
 import { createContext, Dispatch } from 'react';
-import { Task } from './Task';
-import { TasksAction } from './tasksReducer';
+import { TasksAction } from '../reducer/tasksReducer';
+import { Task } from '../model/Task';
 
 export const TasksContext = createContext<Task[]>([])
 

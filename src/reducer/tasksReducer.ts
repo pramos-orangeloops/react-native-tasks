@@ -1,5 +1,5 @@
 import { Reducer } from "react";
-import { Task } from "./Task";
+import { Task } from "../model/Task";
 import { randomUUID } from "expo-crypto"
 
 export const enum TasksActionType {

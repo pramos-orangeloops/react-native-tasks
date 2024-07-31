@@ -1,7 +1,7 @@
 import { useReducer } from "react"
 import { TasksContext, TasksDispatchContext } from "./TasksContext"
-import { Task } from "./Task";
-import { tasksReducer } from "./tasksReducer";
+import { Task } from "../model/Task";
+import { tasksReducer } from "../reducer/tasksReducer";
 import * as Crypto from 'expo-crypto';
 import { ThemeContextProvider } from "./ThemeContextProvider";
 

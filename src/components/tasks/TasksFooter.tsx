@@ -1,7 +1,7 @@
-import { SetStateAction, useContext, useState } from "react"
-import { View, Button, TextInput, TouchableOpacity, Image, StyleSheet, Text } from "react-native"
-import { AppTheme } from "./themes"
-import { ThemeContext } from "./ThemeContextProvider"
+import { useContext, useState } from "react"
+import { View, TextInput, TouchableOpacity, Image, StyleSheet, Text } from "react-native"
+import { AppTheme } from "../../style/themes"
+import { ThemeContext } from "../../context/ThemeContextProvider"
 
 export const enum TaskFilters {
     ALL,

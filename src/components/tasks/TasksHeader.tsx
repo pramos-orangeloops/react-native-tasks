@@ -1,6 +1,6 @@
 import { useContext } from "react"
-import { View, Text, Button, TouchableOpacity, Image } from "react-native"
-import { ThemeContext } from "./ThemeContextProvider"
+import { View, Text, TouchableOpacity, Image } from "react-native"
+import { ThemeContext } from "../../context/ThemeContextProvider"
 
 export interface TasksHeaderProps {
     tasksLeft: number,
