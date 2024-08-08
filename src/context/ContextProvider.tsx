@@ -1,4 +1,4 @@
-import { useReducer } from "react"
+import { createContext, useReducer, useState } from "react"
 import { TasksContext, TasksDispatchContext } from "./TasksContext"
 import { Task } from "../model/Task";
 import { tasksReducer } from "../reducer/tasksReducer";
@@ -12,18 +12,31 @@ const initialTasks: Task[] = [
     new Task(Crypto.randomUUID(), "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua", false, new Date("2024-06-21"), null)
 ];
 
+export type ImageContextValue = {
+    imageUrl: string | null,
+    setImageUrl: (url: string | null) => void
+}
+
+export const ImageContext = createContext<ImageContextValue>({ 
+    imageUrl: null, 
+    setImageUrl: (_) => {} 
+})
+
 export interface ContextProviderProps {
     children: any //TODO: check type
 }
 
 const ContextProvider = (props: ContextProviderProps) => {
     const [tasks, dispatch] = useReducer(tasksReducer, initialTasks)
+    const [photo, setPhoto] = useState<string | null>(null)
 
     return (
         <ThemeContextProvider>
             <TasksDispatchContext.Provider value={dispatch}>
                 <TasksContext.Provider value={tasks}>
-                    {props.children}
+                    <ImageContext.Provider value={{ imageUrl: photo, setImageUrl: (url) => {setPhoto(url)} }}>
+                        {props.children}
+                    </ImageContext.Provider>
                 </TasksContext.Provider>
             </TasksDispatchContext.Provider>
         </ThemeContextProvider>

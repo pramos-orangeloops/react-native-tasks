@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { View, Text, StyleSheet } from "react-native"
+import { View, Text, Image, StyleSheet } from "react-native"
 import { TasksContext } from "../src/context/TasksContext";
 import { useLocalSearchParams } from "expo-router";
 
@@ -14,6 +14,12 @@ const TaskDetail = () => {
             <Text style={task.isDone ? styles.status : {...styles.status, color: "red"}}>Status: {task.isDone ? "Completed" : "Pending"}</Text>
             <Text style={styles.date}>Added Date: {task.addedDate.toDateString()}</Text>
             {task.doneDate && <Text style={styles.date}>Done Date: {task.doneDate!.toDateString()}</Text>}
+            {task.imageUrl &&
+                <Image 
+                    source={{uri: task.imageUrl}}
+                    style={styles.image}
+                />
+            }
         </View>
     )
 }
@@ -45,6 +51,12 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#555',
     },
+    image: {
+        alignSelf: "center",
+        width: 200,
+        height: 200,
+        resizeMode: "center"
+    }
 });
 
 export default TaskDetail

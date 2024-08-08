@@ -58,7 +58,7 @@ const TasksLanding = () => {
                 marginHorizontal: 15
             }}
         >
-            <View // Why is the container required?
+            <View
                 style={{
                     flex: 1
                 }}
@@ -117,10 +117,14 @@ const TasksLanding = () => {
                 <TasksFooter
                     currentFilter={currentFilter}
                     onFilterChange={(newFilter) => setCurrentFilter(newFilter)}
-                    onAddTask={(description) =>dispatch({
-                        type: TasksActionType.ADD,
-                        taskDescription: description
-                    })}
+                    onAddTask={(description, imageUrl) => {
+                        Keyboard.dismiss()
+                        dispatch({
+                            type: TasksActionType.ADD,
+                            taskDescription: description,
+                            imageUrl
+                        })
+                    }}
                 />
             </View>
         </KeyboardAvoidingView>
