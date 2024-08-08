@@ -1,5 +1,7 @@
 import { Link } from "expo-router";
+import { useContext } from "react";
 import { View, Image, TouchableOpacity } from "react-native"
+import { ThemeContext } from "../../context/ThemeContextProvider";
 
 export interface TaskProps {
     taskId: string,
@@ -10,12 +12,14 @@ export interface TaskProps {
 
 const TaskItem = (props: TaskProps) => {
     const { taskId, description, isDone, onClick } = props
+    const theme = useContext(ThemeContext)
 
     return(
         <View style={{
             flex:1,
             flexDirection: "row",
-            alignItems: "center"
+            alignItems: "center",
+            backgroundColor: theme.backgroundColor
         }}>
             {/* Call or send the prop? */}
             <TouchableOpacity onPress={ () => onClick() }>  
@@ -35,7 +39,8 @@ const TaskItem = (props: TaskProps) => {
                     params: { taskId }
                 }}
                 style={{ 
-                    width: "90%"
+                    width: "90%",
+                    color: theme.textColor
                 }} 
             >
                 {description}

@@ -1,4 +1,6 @@
-import { View, Text, Button, TouchableOpacity, Image } from "react-native"
+import { useContext } from "react"
+import { View, Text, TouchableOpacity, Image } from "react-native"
+import { ThemeContext } from "../../context/ThemeContextProvider"
 
 export interface TasksHeaderProps {
     tasksLeft: number,
@@ -7,7 +9,8 @@ export interface TasksHeaderProps {
 
 const TasksHeader = (props: TasksHeaderProps) => {
     const { tasksLeft, onCleanTasks } = props
-
+    const theme = useContext(ThemeContext)
+    
     return (
         <View
             style={{
@@ -21,14 +24,16 @@ const TasksHeader = (props: TasksHeaderProps) => {
                 <Text
                     style={{
                         fontSize: 40,
-                        fontWeight: 700
+                        fontWeight: 700,
+                        color: theme.textColor
                     }}
                 >
                     Tasks
                 </Text>
                 <Text
                     style={{
-                        fontStyle: "italic"
+                        fontStyle: "italic",
+                        color: theme.textColor
                     }}
                 >
                     {tasksLeft} items left

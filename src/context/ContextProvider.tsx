@@ -1,8 +1,9 @@
 import { useReducer } from "react"
 import { TasksContext, TasksDispatchContext } from "./TasksContext"
-import { Task } from "./Task";
-import { tasksReducer } from "./tasksReducer";
+import { Task } from "../model/Task";
+import { tasksReducer } from "../reducer/tasksReducer";
 import * as Crypto from 'expo-crypto';
+import { ThemeContextProvider } from "./ThemeContextProvider";
 
 const initialTasks: Task[] = [
     new Task(Crypto.randomUUID(), "Study Typescript", true, new Date("2024-06-21"), new Date("2024-06-22")),
@@ -19,11 +20,13 @@ const ContextProvider = (props: ContextProviderProps) => {
     const [tasks, dispatch] = useReducer(tasksReducer, initialTasks)
 
     return (
-        <TasksDispatchContext.Provider value={dispatch}>
-            <TasksContext.Provider value={tasks}>
-                {props.children}
-            </TasksContext.Provider>
-        </TasksDispatchContext.Provider>
+        <ThemeContextProvider>
+            <TasksDispatchContext.Provider value={dispatch}>
+                <TasksContext.Provider value={tasks}>
+                    {props.children}
+                </TasksContext.Provider>
+            </TasksDispatchContext.Provider>
+        </ThemeContextProvider>
     )
 }
 

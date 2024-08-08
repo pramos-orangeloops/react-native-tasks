@@ -1,12 +1,11 @@
-import { View, FlatList } from "react-native"
+import { View, Text, KeyboardAvoidingView, Platform, Keyboard } from "react-native"
 import TaskItem from "./TaskItem"
 import TasksHeader from "./TasksHeader"
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import TasksFooter, { TaskFilters } from "./TasksFooter"
-import { Task } from "./Task"
-import { TasksContext, TasksDispatchContext } from "./TasksContext"
-import { TasksActionType } from "./tasksReducer"
-import * as Crypto from 'expo-crypto';
+import { TasksContext, TasksDispatchContext } from "../../context/TasksContext"
+import { TasksActionType } from "../../reducer/tasksReducer"
+import { SwipeListView } from 'react-native-swipe-list-view';
 
 const TasksLanding = () => {
 
@@ -14,7 +13,9 @@ const TasksLanding = () => {
     const dispatch = useContext(TasksDispatchContext)
 
     const [currentFilter, setCurrentFilter] = useState(TaskFilters.ALL)
+    const [isKeyboardVisible, setIsKeyboardVisible] = useState(false)
 
+    const listSize = isKeyboardVisible ? 5 : 7.5
     const tasksLeft = tasks.reduce((acc, elem) => {
         return (elem.isDone ? acc : (acc + 1))
     }, 0)
@@ -32,13 +33,31 @@ const TasksLanding = () => {
         }
     }
 
+    useEffect(() => {
+        const keyboardWillShowListener = Keyboard.addListener("keyboardWillShow", () => {
+            setIsKeyboardVisible(true)
+        })
+        const keyboardWillHideListener = Keyboard.addListener("keyboardWillHide", () => {
+            setIsKeyboardVisible(false)
+        })
+
+        return (() => {
+            keyboardWillShowListener.remove()
+            keyboardWillHideListener.remove()
+        })
+    }, [])
+
     return (
-        <View style={{
-            flex: 1,
-            alignItems: "flex-start",
-            justifyContent: "flex-start",
-            marginHorizontal: 15
-        }}>
+        <KeyboardAvoidingView
+            keyboardVerticalOffset={40}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={{
+                flex: 1.5,
+                alignItems: "flex-start",
+                justifyContent: "flex-start",
+                marginHorizontal: 15
+            }}
+        >
             <View // Why is the container required?
                 style={{
                     flex: 1
@@ -47,18 +66,17 @@ const TasksLanding = () => {
                 <TasksHeader 
                     tasksLeft={tasksLeft}
                     onCleanTasks={() => dispatch({
-                        type: TasksActionType.CLEAN,
-                        task: new Task("" ,"" , false, new Date(), null)
+                        type: TasksActionType.CLEAN
                     })}
                 />
             </View>
 
             <View
                 style={{
-                    flex: 8
+                    flex: listSize
                 }}
             >
-                <FlatList
+                <SwipeListView
                     data={filteredTasks()}
                     renderItem={({ item }) => {
                         return(
@@ -69,14 +87,25 @@ const TasksLanding = () => {
                                 onClick={() => {
                                     dispatch({
                                         type: TasksActionType.UPDATE_STATE,
-                                        task: item
+                                        taskId: item.id
                                     })
                                 }}
                             />
                         )
                     }}
-                    keyExtractor={item => item.id.toString()}
+                    renderHiddenItem={SwipeButtonDelete}
+                    keyExtractor={item => item.id}
                     ItemSeparatorComponent={Separator}
+                    disableRightSwipe={true}
+                    swipeToOpenPercent={-50}
+                    onRightAction={(taskId) => {
+                        dispatch({
+                            type: TasksActionType.DELETE,
+                            taskId: taskId
+                        })
+                    }}
+                    rightActivationValue={-180}
+                    rightOpenValue={-90}
                 />
             </View>
 
@@ -90,11 +119,11 @@ const TasksLanding = () => {
                     onFilterChange={(newFilter) => setCurrentFilter(newFilter)}
                     onAddTask={(description) =>dispatch({
                         type: TasksActionType.ADD,
-                        task: new Task(Crypto.randomUUID(), description, false, new Date(), null)
+                        taskDescription: description
                     })}
                 />
             </View>
-        </View>
+        </KeyboardAvoidingView>
     )
 }
 
@@ -109,4 +138,28 @@ const Separator = () => {
         />
     )
 }
+
+const SwipeButtonDelete = () => {
+    return (
+        <View
+            style={{
+                flex: 1,
+                alignItems: "flex-end",
+                backgroundColor: "red",
+                justifyContent: "center"
+            }}
+        >
+            <Text 
+                style={{
+                    color: "black",
+                    fontSize: 20,
+                    margin: 10
+                }}
+            >
+                Delete
+            </Text>
+        </View>
+    )
+}
+
 export default TasksLanding

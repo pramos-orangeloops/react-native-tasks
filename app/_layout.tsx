@@ -1,5 +1,5 @@
 import { Stack } from 'expo-router';
-import ContextProvider from './ContextProvider';
+import ContextProvider from '../src/context/ContextProvider';
 import { View } from 'react-native';
 
 

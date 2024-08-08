@@ -1,9 +1,12 @@
 import * as React from 'react';
-import TasksLanding from './TasksLanding';
+import TasksLanding from '../src/components/tasks/TasksLanding';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { ThemeContext } from '../src/context/ThemeContextProvider';
 
 export default function App() {
-    return (    
+    const theme = React.useContext(ThemeContext)
+
+    return (
         <SafeAreaView
             style={{
                 flex:1,
@@ -11,7 +14,7 @@ export default function App() {
                 justifyContent:'center',
                 width: "100%",
                 height: "100%",
-                backgroundColor: "white"
+                backgroundColor: theme.backgroundColor
             }}
         >
             <TasksLanding/>

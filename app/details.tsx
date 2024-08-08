@@ -1,6 +1,6 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { View, Text, StyleSheet } from "react-native"
-import { TasksContext } from "./TasksContext";
+import { TasksContext } from "../src/context/TasksContext";
 import { useLocalSearchParams } from "expo-router";
 
 const TaskDetail = () => {
