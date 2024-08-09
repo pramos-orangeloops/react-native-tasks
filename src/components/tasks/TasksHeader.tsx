@@ -1,6 +1,5 @@
-import { useContext } from "react"
+import useTheme from "@/src/hooks/useTheme"
 import { View, Text, TouchableOpacity, Image } from "react-native"
-import { ThemeContext } from "../../context/ThemeContextProvider"
 
 export interface TasksHeaderProps {
     tasksLeft: number,
@@ -9,7 +8,7 @@ export interface TasksHeaderProps {
 
 const TasksHeader = (props: TasksHeaderProps) => {
     const { tasksLeft, onCleanTasks } = props
-    const theme = useContext(ThemeContext)
+    const theme = useTheme()
     
     return (
         <View

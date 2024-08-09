@@ -1,16 +1,17 @@
 import { View, Text, KeyboardAvoidingView, Platform, Keyboard } from "react-native"
 import TaskItem from "./TaskItem"
 import TasksHeader from "./TasksHeader"
-import { useContext, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import TasksFooter, { TaskFilters } from "./TasksFooter"
-import { TasksContext, TasksDispatchContext } from "../../context/TasksContext"
 import { TasksActionType } from "../../reducer/tasksReducer"
 import { SwipeListView } from 'react-native-swipe-list-view';
+import useTasksData from "@/src/hooks/useTasksData"
+import usePerformTasksUpdate from "@/src/hooks/usePerformTasksUpdate"
 
 const TasksLanding = () => {
 
-    const tasks = useContext(TasksContext)
-    const dispatch = useContext(TasksDispatchContext)
+    const tasks = useTasksData()
+    const dispatch = usePerformTasksUpdate()
 
     const [currentFilter, setCurrentFilter] = useState(TaskFilters.ALL)
     const [isKeyboardVisible, setIsKeyboardVisible] = useState(false)
