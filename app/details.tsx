@@ -1,11 +1,10 @@
-import { useContext } from "react";
 import { View, Text, Image, StyleSheet } from "react-native"
-import { TasksContext } from "../src/context/TasksContext";
 import { useLocalSearchParams } from "expo-router";
+import useTasksData from "@/src/hooks/useTasksData";
 
 const TaskDetail = () => {
     const { taskId } = useLocalSearchParams()
-    const task = useContext(TasksContext).find(elem => elem.id.toString() === taskId)! // TODO: check force no null
+    const task = useTasksData().find(elem => elem.id.toString() === taskId)! // TODO: check force no null
 
     return (
         <View style={styles.container}>

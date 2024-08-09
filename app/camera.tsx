@@ -1,13 +1,13 @@
-import { ImageContext } from "@/src/context/ContextProvider";
 import { CameraView, useCameraPermissions } from "expo-camera"
-import { useContext, useRef } from "react";
+import { useRef } from "react";
 import { View, Text, Button, TouchableOpacity } from "react-native"
 import { router } from "expo-router"
+import useImage from "@/src/hooks/useImage";
 
 const Camera = () => {
     const [cameraPermissions, requestCameraPermissions] = useCameraPermissions()
     const cameraRef = useRef<CameraView>(null)
-    const { setImageUrl } = useContext(ImageContext)
+    const [_, setImageUrl] = useImage()
 
     if (!cameraPermissions) { 
         return <View/> 

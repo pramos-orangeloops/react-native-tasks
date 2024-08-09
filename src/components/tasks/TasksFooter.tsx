@@ -1,10 +1,10 @@
-import { useContext, useState } from "react"
+import { useState } from "react"
 import { View, TextInput, TouchableOpacity, Image, StyleSheet, Text } from "react-native"
 import { AppTheme } from "../../style/themes"
-import { ThemeContext } from "../../context/ThemeContextProvider"
 import { AntDesign } from "@expo/vector-icons"
 import { Link } from "expo-router"
-import { ImageContext } from "@/src/context/ContextProvider"
+import useImage from "@/src/hooks/useImage"
+import useTheme from "@/src/hooks/useTheme"
 
 export const enum TaskFilters {
     ALL,
@@ -22,8 +22,8 @@ const TasksFooter = (props: TasksFooterProps) => {
     const { currentFilter, onFilterChange, onAddTask } = props
 
     const [taskDescription, setTaskDescription] = useState("")
-    const theme = useContext(ThemeContext)
-    const { imageUrl, setImageUrl } = useContext(ImageContext)
+    const theme = useTheme()
+    const [imageUrl, setImageUrl] = useImage()
     
     const handleAddTaskClick = () => {
         if (taskDescription.trim().length > 0) {
