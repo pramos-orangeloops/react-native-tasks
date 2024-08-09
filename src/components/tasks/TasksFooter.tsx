@@ -2,6 +2,9 @@ import { useContext, useState } from "react"
 import { View, TextInput, TouchableOpacity, Image, StyleSheet, Text } from "react-native"
 import { AppTheme } from "../../style/themes"
 import { ThemeContext } from "../../context/ThemeContextProvider"
+import { AntDesign } from "@expo/vector-icons"
+import { Link } from "expo-router"
+import { ImageContext } from "@/src/context/ContextProvider"
 
 export const enum TaskFilters {
     ALL,
@@ -12,7 +15,7 @@ export const enum TaskFilters {
 export interface TasksFooterProps {
     currentFilter: TaskFilters,
     onFilterChange: (filter: TaskFilters) => void,
-    onAddTask: (description: string) => void
+    onAddTask: (description: string, imageUrl: string | null) => void
 }
 
 const TasksFooter = (props: TasksFooterProps) => {
@@ -20,11 +23,13 @@ const TasksFooter = (props: TasksFooterProps) => {
 
     const [taskDescription, setTaskDescription] = useState("")
     const theme = useContext(ThemeContext)
-
+    const { imageUrl, setImageUrl } = useContext(ImageContext)
+    
     const handleAddTaskClick = () => {
         if (taskDescription.trim().length > 0) {
-            onAddTask(taskDescription),
+            onAddTask(taskDescription, imageUrl),
             setTaskDescription("")
+            setImageUrl(null)
         }
     }
 
@@ -77,14 +82,18 @@ const TasksFooter = (props: TasksFooterProps) => {
                         alignItems: "center",
                     }}
                 >
-                    <View style={{width:"90%"}}>
+                    <View
+                        style={{
+                            flex: 6
+                        }}
+                    >
                         <TextInput
                             value={taskDescription}
                             onChangeText={setTaskDescription}
                             returnKeyType="done"
                             onSubmitEditing={handleAddTaskClick}
                             style={{
-                                marginEnd: 10,
+                                marginEnd: 5,
                                 minHeight: 40,
                                 borderColor: "#DDD",
                                 borderWidth: 1,
@@ -92,7 +101,33 @@ const TasksFooter = (props: TasksFooterProps) => {
                             }}
                         />
                     </View>
-                    <TouchableOpacity onPress={handleAddTaskClick}>
+
+                    <Link href={"/camera"} asChild={true}>
+                        <TouchableOpacity
+                            style={{
+                                flex: 1,
+                                justifyContent: "center",
+                                alignItems: "center",
+                                width: 40,
+                                height: 40,
+                                backgroundColor: "#ED7303",
+                                margin: 5,
+                                borderRadius: 4
+                            }}
+                        >
+                            <AntDesign 
+                                name={imageUrl === null ? "camera" : "check"}
+                                size={35} 
+                                color={imageUrl === null ? "white" : "green"}  
+                            />
+                        </TouchableOpacity>
+                    </Link>
+                    <TouchableOpacity 
+                        onPress={handleAddTaskClick}
+                        style={{
+                            flex: 1
+                        }}
+                    >
                         <Image
                             source={require("@/assets/images/add-task.png")} 
                             style={{

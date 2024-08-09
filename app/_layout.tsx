@@ -19,6 +19,7 @@ export default function RootLayout() {
         >
           <Stack.Screen name="index" options={{headerShown: false, title: "Landing"}}/>
           <Stack.Screen name="details" options={{title: "Details"}}/>
+          <Stack.Screen name="camera" options={{title: "Camera"}}/>
         </Stack>
       </ContextProvider>
   );

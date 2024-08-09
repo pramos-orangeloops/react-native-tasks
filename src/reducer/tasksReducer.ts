@@ -16,7 +16,8 @@ export type TasksAction =
     }
     | {
         type: TasksActionType.ADD,
-        taskDescription: string
+        taskDescription: string,
+        imageUrl: string | null
     }
     | {
         type: TasksActionType.DELETE,
@@ -49,7 +50,7 @@ export const tasksReducer: Reducer<Task[], TasksAction> = (tasks, action) => {
     
         case TasksActionType.ADD: {
             return [
-                new Task(randomUUID(), action.taskDescription, false, new Date(), null),
+                new Task(randomUUID(), action.taskDescription, false, new Date(), null, action.imageUrl),
                 ...tasks
             ]
         }
