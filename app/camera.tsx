@@ -9,27 +9,25 @@ const Camera = () => {
     const cameraRef = useRef<CameraView>(null)
     const { setImageUrl } = useContext(ImageContext)
 
-    if (!cameraPermissions) { 
-        return <View/> 
-    }
-
-    if (!cameraPermissions.granted) {
-        <View
-            style={{
-                flex: 1,
-                justifyContent: "center"
-            }}
-        >
-            <Text 
+    if (!cameraPermissions?.granted) {
+        return (
+            <View
                 style={{
-                    textAlign: "center",
-                    paddingBottom: 10
+                    flex: 1,
+                    justifyContent: "center"
                 }}
             >
-                We need your permission to show the camera
-            </Text>
-            <Button onPress={requestCameraPermissions} title="grant permission" />
-      </View>
+                <Text 
+                    style={{
+                        textAlign: "center",
+                        paddingBottom: 10
+                    }}
+                >
+                    We need your permission to show the camera
+                </Text>
+                <Button onPress={requestCameraPermissions} title="grant permission" />
+            </View>
+        )
     }
 
     const takePicture = async () => {
